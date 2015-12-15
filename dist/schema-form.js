@@ -1722,6 +1722,8 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
             if (ngModel && ngModel.$setDirty) {
               ngModel.$setDirty();
             }
+
+            scope.$emit('schemaFormDeleteFromArray', scope, index);
             return list;
           };
 
