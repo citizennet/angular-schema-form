@@ -1541,6 +1541,12 @@ angular.module('schemaForm').factory('sfValidator', [function() {
       return {valid: true};
     }
     var schema = form.schema;
+    var isTypeArray = (Array.isArray(schema.type) ? schema.type : [schema.type]).includes('array');
+
+    // field is array item
+    if(isTypeArray && !isNaN(form.key[form.key.length - 1])) {
+      schema = form.schema.items;
+    }
 
     if (!schema) {
       return {valid: true};

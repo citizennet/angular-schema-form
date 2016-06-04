@@ -40,7 +40,7 @@
   ],
   "dependencies": {
     "angular": ">= 1.2",
-    "tv4": "~1.0.15",
+    "tv4": "~1.2.7",
     "angular-sanitize": ">= 1.2",
     "objectpath": "~1.1.0"
   },
