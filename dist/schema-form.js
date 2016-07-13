@@ -1688,6 +1688,7 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
           scope.appendToArray = function() {
             var len = list.length;
             var copy = scope.copyWithIndex(len);
+            scope.$emit('schemaFormBeforeAppendToArray', copy);
             schemaForm.traverseForm(copy, function(part) {
 
               if (part.key) {
@@ -1721,6 +1722,7 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
 
             // Trigger validation.
             scope.validateArray();
+            scope.$emit('schemaFormAfterAppendToArray', copy);
             return list;
           };
 
