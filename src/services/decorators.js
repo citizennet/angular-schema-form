@@ -260,11 +260,13 @@ angular.module('schemaForm').provider('schemaFormDecorators',
 
                           scope.ngModel.$setValidity(error, validity === true);
 
-                          if (validity === true) {
+                          // when using custom validation, errors might not render
+                          // unless we force validation
+                          // if (validity === true) {
                             // Setting or removing a validity can change the field to believe its valid
                             // but its not. So lets trigger its validation as well.
                             scope.$broadcast('schemaFormValidate');
-                          }
+                          // }
                         }
                       });
 

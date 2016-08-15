@@ -1,5 +1,8 @@
-<div sf-array="form" class="schema-form-array {{form.htmlClass}}"
-     ng-model="$$value$$" ng-model-options="form.ngModelOptions">
+<div sf-array="form"
+     class="schema-form-array {{form.htmlClass}}"
+     name="{{form.key.slice(-1)[0]}}"
+     ng-model="$$value$$"
+     ng-model-options="form.ngModelOptions">
   <label class="control-label" ng-show="showTitle()">{{ form.title }}</label>
   <ol class="list-group" ng-model="modelArray" ui-sortable="form.sortOptions">
     <li class="list-group-item {{form.fieldHtmlClass}}"
