@@ -43,7 +43,7 @@ angular.module('schemaForm').provider('schemaFormDecorators',
               scope.$emit('schemaFormPropagateScope', scope);
             });
 
-            scope.$on('schemaFormDeleteFromArray', function(event, scope, index) {
+            scope.$on('schemaFormBeforeDeleteFromArray', function(event, scope, index) {
               event.stopPropagation();
               event.preventDefault();
               scope.$emit('schemaFormDeleteScope', scope, index);
