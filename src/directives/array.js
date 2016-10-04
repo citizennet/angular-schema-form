@@ -139,7 +139,8 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
           };
 
           scope.deleteFromArray = function(index) {
-            console.log('deleteFromArray:', index, list);
+            scope.$emit('schemaFormBeforeDeleteFromArray', scope, index, list);
+
             list.splice(index, 1);
 
             // Trigger validation.
@@ -149,6 +150,9 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
             if (ngModel && ngModel.$setDirty) {
               ngModel.$setDirty();
             }
+
+            scope.$emit('schemaFormAfterDeleteFromArray', scope, index, list);
+
             return list;
           };
 
