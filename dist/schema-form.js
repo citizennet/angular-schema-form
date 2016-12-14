@@ -1033,7 +1033,16 @@ angular.module('schemaForm').provider('sfErrorMessage', function() {
       };
       if (angular.isFunction(message)) {
         return message(context);
-      } else {
+      } 
+      else if (Array.isArray(message)) {
+        var ulElement = angular.element('<ul></ul>');
+        message.forEach(function(m) {
+          var liElement = angular.element('<li>' + $interpolate(m)(context) + '</li>'); 
+          ulElement.append(liElement);
+        });
+        return ulElement;
+      }
+      else {
         return $interpolate(message)(context);
       }
     };
