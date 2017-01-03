@@ -49,6 +49,9 @@ angular.module('schemaForm').provider('schemaFormDecorators',
               scope.$emit('schemaFormDeleteScope', scope, index);
             });
 
+            //This is bad and I feel bad
+            scope.getScope = function() { return scope; };
+
             //Keep error prone logic from the template
             scope.showTitle = function() {
               return scope.form && scope.form.notitle !== true && scope.form.title;
