@@ -593,6 +593,8 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                 // and https://github.com/Textalk/angular-schema-form/issues/206
                 form.ngModelOptions = form.ngModelOptions || {};
                 scope.form  = form;
+                // not proud of this
+                form.getScope = function() { return scope; };
 
                 //ok let's replace that template!
                 //We do this manually since we need to bind ng-model properly and also
@@ -729,6 +731,11 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                     }
                   });
                 }
+
+                // We need the ngModelController on several places,
+                // most notably for errors.
+                // So we emit it up to the decorator directive so it can put it on scope.
+                scope.$emit('schemaFormPropagateNgModelController', scope.ngModel);
 
                 once();
               }
@@ -1623,6 +1630,8 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
         var formDefCache = {};
 
         scope.validateArray = angular.noop;
+        // I still feel bad
+        scope.getScope = function() { return scope; };
 
         if (ngModel) {
           // We need the ngModelController on several places,
@@ -1640,6 +1649,8 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
             return;
           }
 
+          // still feel bad about this
+          form.getScope = function() { return scope; };
 
           // An array model always needs a key so we know what part of the model
           // to look at. This makes us a bit incompatible with JSON Form, on the
@@ -2645,11 +2656,6 @@ angular.module('schemaForm').directive('schemaValidate', ['sfValidator', '$parse
       priority: 500,
       require: 'ngModel',
       link: function(scope, element, attrs, ngModel) {
-        // We need the ngModelController on several places,
-        // most notably for errors.
-        // So we emit it up to the decorator directive so it can put it on scope.
-        scope.$emit('schemaFormPropagateNgModelController', ngModel);
-
         var error = null;
         var form = scope.$eval(attrs.schemaValidate);
 

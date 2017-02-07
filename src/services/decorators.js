@@ -177,6 +177,8 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                 // and https://github.com/Textalk/angular-schema-form/issues/206
                 form.ngModelOptions = form.ngModelOptions || {};
                 scope.form  = form;
+                // not proud of this
+                form.getScope = function() { return scope; };
 
                 //ok let's replace that template!
                 //We do this manually since we need to bind ng-model properly and also
@@ -313,6 +315,11 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                     }
                   });
                 }
+
+                // We need the ngModelController on several places,
+                // most notably for errors.
+                // So we emit it up to the decorator directive so it can put it on scope.
+                scope.$emit('schemaFormPropagateNgModelController', scope.ngModel);
 
                 once();
               }
