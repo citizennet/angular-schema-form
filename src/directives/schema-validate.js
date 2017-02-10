@@ -9,6 +9,11 @@ angular.module('schemaForm').directive('schemaValidate', ['sfValidator', '$parse
       priority: 500,
       require: 'ngModel',
       link: function(scope, element, attrs, ngModel) {
+        // We need the ngModelController on several places,
+        // most notably for errors.
+        // So we emit it up to the decorator directive so it can put it on scope.
+        scope.$emit('schemaFormPropagateNgModelController', ngModel);
+
         var error = null;
         var form = scope.$eval(attrs.schemaValidate);
 

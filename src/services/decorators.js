@@ -312,14 +312,15 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                           delete obj[form.key.slice(-1)];
                         }
                       }
+
+                      scope.$emit('schemaFormDeleteFormController', scope);
                     }
                   });
                 }
 
-                // We need the ngModelController on several places,
-                // most notably for errors.
-                // So we emit it up to the decorator directive so it can put it on scope.
-                scope.$emit('schemaFormPropagateNgModelController', scope.ngModel);
+                // We emit this whenever a new ngModel is instantiated so any services
+                // that might need it will have a reference (specifically useful for fields within array items)
+                scope.$emit('schemaFormPropagateFormController', scope);
 
                 once();
               }
