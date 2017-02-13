@@ -593,6 +593,8 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                 // and https://github.com/Textalk/angular-schema-form/issues/206
                 form.ngModelOptions = form.ngModelOptions || {};
                 scope.form  = form;
+                // not proud of this
+                form.getScope = function() { return scope; };
 
                 //ok let's replace that template!
                 //We do this manually since we need to bind ng-model properly and also
@@ -726,9 +728,15 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                           delete obj[form.key.slice(-1)];
                         }
                       }
+
+                      scope.$emit('schemaFormDeleteFormController', scope);
                     }
                   });
                 }
+
+                // We emit this whenever a new ngModel is instantiated so any services
+                // that might need it will have a reference (specifically useful for fields within array items)
+                scope.$emit('schemaFormPropagateFormController', scope);
 
                 once();
               }
@@ -1623,6 +1631,8 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
         var formDefCache = {};
 
         scope.validateArray = angular.noop;
+        // I still feel bad
+        scope.getScope = function() { return scope; };
 
         if (ngModel) {
           // We need the ngModelController on several places,
@@ -1640,6 +1650,8 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
             return;
           }
 
+          // still feel bad about this
+          form.getScope = function() { return scope; };
 
           // An array model always needs a key so we know what part of the model
           // to look at. This makes us a bit incompatible with JSON Form, on the
