@@ -87,6 +87,11 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
 
           }
 
+          scope.setArrayIndex = function(index) {
+            console.log(':: setArrayIndex ::', index);
+            scope.arrayIndex = index;
+          };
+
           // We create copies of the form on demand, caching them for
           // later requests
           scope.copyWithIndex = function(index) {
