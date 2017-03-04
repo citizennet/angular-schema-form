@@ -106,7 +106,7 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
             return formDefCache[index];
           };
 
-          scope.appendToArray = function() {
+          scope.appendToArray = function(options) {
             var len = list.length;
             var copy = scope.copyWithIndex(len);
             scope.$emit('schemaFormBeforeAppendToArray', copy);
@@ -143,6 +143,12 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
 
             // Trigger validation.
             scope.validateArray();
+
+            // Angular 1.2 lacks setDirty
+            if (!options.silent && ngModel && ngModel.$setDirty) {
+              ngModel.$setDirty();
+            }
+            
             scope.$emit('schemaFormAfterAppendToArray', copy);
             return list;
           };
@@ -168,7 +174,7 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
           // Always start with one empty form unless configured otherwise.
           // Special case: don't do it if form has a titleMap
           if (!form.titleMap && form.startEmpty !== true && list.length === 0) {
-            scope.appendToArray();
+            scope.appendToArray({ silent: true });
           }
 
           // Title Map handling

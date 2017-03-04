@@ -1753,6 +1753,12 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
 
             // Trigger validation.
             scope.validateArray();
+
+            // Angular 1.2 lacks setDirty
+            if (ngModel && ngModel.$setDirty) {
+              ngModel.$setDirty();
+            }
+            
             scope.$emit('schemaFormAfterAppendToArray', copy);
             return list;
           };
