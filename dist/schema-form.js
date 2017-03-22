@@ -679,6 +679,9 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                             form.validationMessage[error] = validationMessage;
                           }
 
+                          // seems like if we don't call $validate, then if this key
+                          // was invalid but is now valid, parents of the key will remain invalid
+                          scope.ngModel.$validate();
                           scope.ngModel.$setValidity(error, validity === true);
 
                           // when using custom validation, errors might not render
@@ -1524,10 +1527,13 @@ angular.module('schemaForm').provider('schemaForm',
     };
 
     service.traverseForm = function(form, fn) {
-      fn(form);
-      angular.forEach(form.items, function(f) {
-        service.traverseForm(f, fn);
-      });
+      var skipItems = fn(form);
+
+      if(skipItems !== false) {
+        angular.forEach(form.items, function(f) {
+          service.traverseForm(f, fn);
+        });
+      }
 
       if (form.tabs) {
         angular.forEach(form.tabs, function(tab) {
@@ -1735,6 +1741,10 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
                 if (angular.isDefined(def)) {
                   sfSelect(part.key, scope.model, def);
                 }
+              }
+
+              if(form.type === 'array' || (form.schema && form.schema.type === 'array')) {
+                return false;
               }
             });
 
