@@ -1634,7 +1634,7 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
       scope: true,
       require: '?ngModel',
       link: function(scope, element, attrs, ngModel) {
-        var formDefCache = {};
+        var formDefCache = [];
 
         scope.validateArray = angular.noop;
         // I still feel bad
@@ -1743,7 +1743,7 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
                 }
               }
 
-              if(form.type === 'array' || (form.schema && form.schema.type === 'array')) {
+              if(part.type === 'array' || (part.schema && part.schema.type === 'array')) {
                 return false;
               }
             });
@@ -1771,6 +1771,7 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
             scope.$emit('schemaFormBeforeDeleteFromArray', scope, index, list);
 
             list.splice(index, 1);
+            formDefCache.splice(index, 1);
 
             // Trigger validation.
             scope.validateArray();

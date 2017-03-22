@@ -12,7 +12,7 @@
               type="button" class="close pull-right">
               <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
       </button>
-      <sf-decorator ng-init="arrayIndex = $index" form="copyWithIndex($index)"></sf-decorator>
+      <sf-decorator form="copyWithIndex($index)"></sf-decorator>
     </li>
   </ol>
   <div ng-class="{'has-error': form.disableErrorState !== true && hasError(), 'has-success': form.disableSuccessState !== true && hasSuccess(), 'has-feedback': form.feedback !== false }">
