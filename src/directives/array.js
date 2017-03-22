@@ -127,7 +127,7 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
                 }
               }
 
-              if(form.type === 'array' || (form.schema && form.schema.type === 'array')) {
+              if(part.type === 'array' || (part.schema && part.schema.type === 'array')) {
                 return false;
               }
             });
