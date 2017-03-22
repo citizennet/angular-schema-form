@@ -679,6 +679,9 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                             form.validationMessage[error] = validationMessage;
                           }
 
+                          // seems like if we don't call $validate, then if this key
+                          // was invalid but is now valid, parents of the key will remain invalid
+                          scope.ngModel.$validate();
                           scope.ngModel.$setValidity(error, validity === true);
 
                           // when using custom validation, errors might not render
