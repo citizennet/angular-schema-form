@@ -1527,10 +1527,13 @@ angular.module('schemaForm').provider('schemaForm',
     };
 
     service.traverseForm = function(form, fn) {
-      fn(form);
-      angular.forEach(form.items, function(f) {
-        service.traverseForm(f, fn);
-      });
+      var skipItems = fn(form);
+
+      if(skipItems !== false) {
+        angular.forEach(form.items, function(f) {
+          service.traverseForm(f, fn);
+        });
+      }
 
       if (form.tabs) {
         angular.forEach(form.tabs, function(tab) {
@@ -1738,6 +1741,10 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
                 if (angular.isDefined(def)) {
                   sfSelect(part.key, scope.model, def);
                 }
+              }
+
+              if(part.type === 'array' || (part.schema && part.schema.type === 'array')) {
+                return false;
               }
             });
 

@@ -126,6 +126,10 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
                   sfSelect(part.key, scope.model, def);
                 }
               }
+
+              if(part.type === 'array' || (part.schema && part.schema.type === 'array')) {
+                return false;
+              }
             });
 
             // If there are no defaults nothing is added so we need to initialize
