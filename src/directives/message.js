@@ -9,6 +9,8 @@ angular.module('schemaForm').directive('sfMessage',
     scope: false,
     restrict: 'EA',
     link: function(scope, element, attrs) {
+      function sfMessageTag() {}
+      scope.__tag = new sfMessageTag();
 
       var message = '';
       if (attrs.sfMessage) {

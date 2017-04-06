@@ -4,11 +4,6 @@ angular.module('schemaForm').config(['schemaFormDecoratorsProvider', function(de
   decoratorsProvider.defineDecorator('bootstrapDecorator', {
     textarea: {template: base + 'textarea.html', replace: false},
     fieldset: {template: base + 'fieldset.html', replace: false},
-    /*fieldset: {template: base + 'fieldset.html', replace: true, builder: function(args) {
-      var children = args.build(args.form.items, args.path + '.items');
-      console.log('fieldset children frag', children.childNodes)
-      args.fieldFrag.childNode.appendChild(children);
-    }},*/
     array: {template: base + 'array.html', replace: false},
     tabarray: {template: base + 'tabarray.html', replace: false},
     tabs: {template: base + 'tabs.html', replace: false},
@@ -45,7 +40,7 @@ angular.module('schemaForm').config(['schemaFormDecoratorsProvider', function(de
     input: base + 'default.html',
     radios: base + 'radios.html',
     'radios-inline': base + 'radios-inline.html',
-    radiobuttons: base + 'radio-buttons.html',
+    radiobuttons: base + 'radio-buttons.html'
   });
 
 }]).directive('sfFieldset', function() {
@@ -54,6 +49,9 @@ angular.module('schemaForm').config(['schemaFormDecoratorsProvider', function(de
     scope: true,
     templateUrl: 'directives/decorators/bootstrap/fieldset-trcl.html',
     link: function(scope, element, attrs) {
+      function sfFieldsetDirectiveTag() {}
+      scope.__tag = new sfFieldsetDirectiveTag();
+
       scope.title = scope.$eval(attrs.title);
     }
   };
