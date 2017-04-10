@@ -449,7 +449,6 @@ angular.module('schemaForm').provider('schemaFormDecorators',
           scope: true,
           require: '?^sfSchema',
           link: function(scope, element, attrs, sfSchema) {
-
             //The ngModelController is used in some templates and
             //is needed for error messages,
             scope.$on('schemaFormPropagateNgModelController', function(event, ngModel) {
@@ -734,6 +733,12 @@ angular.module('schemaForm').provider('schemaFormDecorators',
 
                       scope.$emit('schemaFormDeleteFormController', scope);
                     }
+
+                    _.forOwn(form, function(_v, k, c) {
+                      c[k] = null;
+                    });
+
+                    form = null;
                   });
                 }
 
@@ -1634,6 +1639,23 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
       scope: true,
       require: '?ngModel',
       link: function(scope, element, attrs, ngModel) {
+        function sfArrayTag() {}
+        scope.__tag = new sfArrayTag();
+
+        // Clean up closure variables
+        scope.$on('$destroy', function() {
+          _.each(formDefCache, function(f) {
+            _.forOwn(f, function(_v, k, c) {
+              c[k] = null;
+            });
+
+          });
+
+          _.empty(formDefCache);
+
+          formDefCache = null;
+        });
+
         var formDefCache = [];
 
         scope.validateArray = angular.noop;
@@ -1911,6 +1933,9 @@ angular.module('schemaForm').directive('sfChanged', function() {
     restrict: 'AC',
     scope: false,
     link: function(scope, element, attrs, ctrl) {
+      function sfChangedTag() {}
+      scope.__tag = new sfChangedTag();
+
       var form = scope.$eval(attrs.sfChanged);
       //"form" is really guaranteed to be here since the decorator directive
       //waits for it. But best be sure.
@@ -1953,6 +1978,9 @@ angular.module('schemaForm').directive('sfField',
             scope.form = sfSchema.lookup['f' + attrs.sfField];
           },
           post: function(scope, element, attrs, sfSchema) {
+            function sfFieldTag() {}
+            scope.__tag = new sfFieldTag();
+
             //Keep error prone logic from the template
             scope.showTitle = function() {
               return scope.form && scope.form.notitle !== true && scope.form.title;
@@ -2168,6 +2196,8 @@ angular.module('schemaForm').directive('sfMessage',
     scope: false,
     restrict: 'EA',
     link: function(scope, element, attrs) {
+      function sfMessageTag() {}
+      scope.__tag = new sfMessageTag();
 
       var message = '';
       if (attrs.sfMessage) {
@@ -2240,6 +2270,9 @@ function(sel, sfPath, schemaForm) {
   return {
     scope: false,
     link: function(scope, element, attrs) {
+      function sfNewArrayTag() {}
+      scope.__tag = new sfNewArrayTag();
+
       scope.min = 0;
 
       scope.modelArray = scope.$eval(attrs.sfNewArray);
@@ -2504,6 +2537,8 @@ angular.module('schemaForm')
       transclude: true,
       require: '?form',
       link: function(scope, element, attrs, formCtrl, transclude) {
+        function sfSchemaTag() {}
+        scope.__tag = new sfSchemaTag();
 
         //expose form controller on scope so that we don't force authors to use name on form
         scope.formCtrl = formCtrl;
@@ -2644,6 +2679,12 @@ angular.module('schemaForm')
           // keep the model intact. So therefore we set a flag to tell the others it's time to just
           // let it be.
           scope.externalDestructionInProgress = true;
+
+          childScope = null;
+          defaultForm = null;
+          lastDigest && (lastDigest.form = null);
+          lastDigest && (lastDigest.schema = null);
+          lastDigest = null;
         });
 
         /**
@@ -2673,6 +2714,16 @@ angular.module('schemaForm').directive('schemaValidate', ['sfValidator', '$parse
       priority: 500,
       require: 'ngModel',
       link: function(scope, element, attrs, ngModel) {
+        function sfValidatorTag() {}
+        scope.__tag = new sfValidatorTag();
+
+        // Clean up closure variables
+        scope.$on('$destroy', function() {
+          error = null;
+          form = null;
+          schema = null;
+        });
+
         // We need the ngModelController on several places,
         // most notably for errors.
         // So we emit it up to the decorator directive so it can put it on scope.
