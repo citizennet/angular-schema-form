@@ -11,6 +11,9 @@ angular.module('schemaForm').directive('sfChanged', function() {
     restrict: 'AC',
     scope: false,
     link: function(scope, element, attrs, ctrl) {
+      function sfChangedTag() {}
+      scope.__tag = new sfChangedTag();
+
       var form = scope.$eval(attrs.sfChanged);
       //"form" is really guaranteed to be here since the decorator directive
       //waits for it. But best be sure.

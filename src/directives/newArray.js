@@ -6,6 +6,9 @@ function(sel, sfPath, schemaForm) {
   return {
     scope: false,
     link: function(scope, element, attrs) {
+      function sfNewArrayTag() {}
+      scope.__tag = new sfNewArrayTag();
+
       scope.min = 0;
 
       scope.modelArray = scope.$eval(attrs.sfNewArray);
