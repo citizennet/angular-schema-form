@@ -34,6 +34,8 @@ angular.module('schemaForm')
       transclude: true,
       require: '?form',
       link: function(scope, element, attrs, formCtrl, transclude) {
+        function sfSchemaTag() {}
+        scope.__tag = new sfSchemaTag();
 
         //expose form controller on scope so that we don't force authors to use name on form
         scope.formCtrl = formCtrl;
@@ -174,6 +176,12 @@ angular.module('schemaForm')
           // keep the model intact. So therefore we set a flag to tell the others it's time to just
           // let it be.
           scope.externalDestructionInProgress = true;
+
+          childScope = null;
+          defaultForm = null;
+          lastDigest && (lastDigest.form = null);
+          lastDigest && (lastDigest.schema = null);
+          lastDigest = null;
         });
 
         /**
