@@ -729,16 +729,17 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                         } else {
                           delete obj[form.key.slice(-1)];
                         }
-                      }
 
-                      scope.$emit('schemaFormDeleteFormController', scope);
+                        scope.$emit('schemaFormDeleteFormController', scope);
+
+                        _.forOwn(form, function(_v, k, c) {
+                          c[k] = null;
+                        });
+
+                        form = null;
+                      }
                     }
 
-                    _.forOwn(form, function(_v, k, c) {
-                      c[k] = null;
-                    });
-
-                    form = null;
                   });
                 }
 
