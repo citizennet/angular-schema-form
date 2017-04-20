@@ -729,16 +729,17 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                         } else {
                           delete obj[form.key.slice(-1)];
                         }
-                      }
 
-                      scope.$emit('schemaFormDeleteFormController', scope);
+                        scope.$emit('schemaFormDeleteFormController', scope);
+
+                        _.forOwn(form, function(_v, k, c) {
+                          c[k] = null;
+                        });
+
+                        form = null;
+                      }
                     }
 
-                    _.forOwn(form, function(_v, k, c) {
-                      c[k] = null;
-                    });
-
-                    form = null;
                   });
                 }
 
@@ -2651,9 +2652,14 @@ angular.module('schemaForm')
           var form   = scope.initialForm || defaultForm;
 
           //The check for schema.type is to ensure that schema is not {}
-          if (form && schema && schema.type &&
-              (lastDigest.form !== form || lastDigest.schema !== schema) &&
-              Object.keys(schema.properties).length > 0) {
+          if (
+            form && 
+            schema && 
+            schema.type &&
+            _.isObject(lastDigest) &&
+            (_.get(lastDigest, 'form') !== form || lastDigest.schema !== schema) &&
+            Object.keys(schema.properties).length > 0
+          ) {
             lastDigest.schema = schema;
             lastDigest.form = form;
 
