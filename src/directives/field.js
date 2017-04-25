@@ -24,6 +24,9 @@ angular.module('schemaForm').directive('sfField',
             scope.form = sfSchema.lookup['f' + attrs.sfField];
           },
           post: function(scope, element, attrs, sfSchema) {
+            function sfFieldTag() {}
+            scope.__tag = new sfFieldTag();
+
             //Keep error prone logic from the template
             scope.showTitle = function() {
               return scope.form && scope.form.notitle !== true && scope.form.title;

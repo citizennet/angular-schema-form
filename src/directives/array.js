@@ -18,6 +18,23 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
       scope: true,
       require: '?ngModel',
       link: function(scope, element, attrs, ngModel) {
+        function sfArrayTag() {}
+        scope.__tag = new sfArrayTag();
+
+        // Clean up closure variables
+        scope.$on('$destroy', function() {
+          _.each(formDefCache, function(f) {
+            _.forOwn(f, function(_v, k, c) {
+              c[k] = null;
+            });
+
+          });
+
+          _.empty(formDefCache);
+
+          formDefCache = null;
+        });
+
         var formDefCache = [];
 
         scope.validateArray = angular.noop;
