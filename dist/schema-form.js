@@ -591,7 +591,7 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                 // see https://github.com/Textalk/angular-schema-form/issues/255
                 // and https://github.com/Textalk/angular-schema-form/issues/206
                 form.ngModelOptions = form.ngModelOptions || {};
-                scope.form  = form;
+                scope.form = form;
                 // not proud of this
                 form.getScope = function() { return scope; };
 
@@ -731,11 +731,6 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                         }
 
                         scope.$emit('schemaFormDeleteFormController', scope);
-
-                        _.forOwn(form, function(_v, k, c) {
-                          c[k] = null;
-                        });
-
                         form = null;
                       }
                     }
