@@ -6,7 +6,7 @@
   <label class="control-label" ng-show="showTitle()">{{ form.title }}</label>
   <ol class="list-group" ng-model="modelArray" ui-sortable="form.sortOptions">
     <li class="list-group-item {{form.fieldHtmlClass}}"
-        ng-repeat="item in modelArray">
+        ng-repeat="item in modelArray track by $index">
       <button ng-hide="form.readonly || form.remove === null"
               ng-click="deleteFromArray($index)"
               type="button" class="close pull-right">
