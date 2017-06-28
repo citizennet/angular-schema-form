@@ -248,10 +248,10 @@ angular.module('schemaForm').provider('sfBuilder', ['sfPathProvider', function(s
       // but be nice to existing ng-if.
       if (args.form.condition) {
         var evalExpr = 'evalExpr(' + args.path +
-                       '.contidion, { model: model, "arrayIndex": $index})';
+                       '.contidion, { form: form, model: model, "arrayIndex": $index})';
         if (args.form.key) {
           var strKey = sfPathProvider.stringify(args.form.key);
-          evalExpr = 'evalExpr(' + args.path + '.condition,{ model: model, "arrayIndex": $index, ' +
+          evalExpr = 'evalExpr(' + args.path + '.condition, { form: form, model: model, "arrayIndex": $index, ' +
                      '"modelValue": model' + (strKey[0] === '[' ? '' : '.') + strKey + '})';
         }
 
@@ -627,9 +627,9 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                     // but be nice to existing ng-if.
                     if (form.condition) {
 
-                      var evalExpr = 'evalExpr(form.condition,{ model: model, "arrayIndex": arrayIndex})';
+                      var evalExpr = 'evalExpr(form.condition,{ form: form, model: model, "arrayIndex": arrayIndex})';
                       if (form.key) {
-                        evalExpr = 'evalExpr(form.condition,{ model: model, "arrayIndex": arrayIndex, "modelValue": model' + sfPath.stringify(form.key) + '})';
+                        evalExpr = 'evalExpr(form.condition, { form: form, model: model, "arrayIndex": arrayIndex, "modelValue": model' + sfPath.stringify(form.key) + '})';
                       }
 
                       angular.forEach(element.children(), function(child) {

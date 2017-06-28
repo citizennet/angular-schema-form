@@ -211,9 +211,9 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                     // but be nice to existing ng-if.
                     if (form.condition) {
 
-                      var evalExpr = 'evalExpr(form.condition,{ model: model, "arrayIndex": arrayIndex})';
+                      var evalExpr = 'evalExpr(form.condition,{ form: form, model: model, "arrayIndex": arrayIndex})';
                       if (form.key) {
-                        evalExpr = 'evalExpr(form.condition,{ model: model, "arrayIndex": arrayIndex, "modelValue": model' + sfPath.stringify(form.key) + '})';
+                        evalExpr = 'evalExpr(form.condition, { form: form, model: model, "arrayIndex": arrayIndex, "modelValue": model' + sfPath.stringify(form.key) + '})';
                       }
 
                       angular.forEach(element.children(), function(child) {
