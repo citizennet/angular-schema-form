@@ -34,6 +34,8 @@ angular.module('schemaForm')
       transclude: true,
       require: '?form',
       link: function(scope, element, attrs, formCtrl, transclude) {
+        function sfSchemaTag() {}
+        scope.__tag = new sfSchemaTag();
 
         //expose form controller on scope so that we don't force authors to use name on form
         scope.formCtrl = formCtrl;
@@ -146,9 +148,14 @@ angular.module('schemaForm')
           var form   = scope.initialForm || defaultForm;
 
           //The check for schema.type is to ensure that schema is not {}
-          if (form && schema && schema.type &&
-              (lastDigest.form !== form || lastDigest.schema !== schema) &&
-              Object.keys(schema.properties).length > 0) {
+          if (
+            form && 
+            schema && 
+            schema.type &&
+            _.isObject(lastDigest) &&
+            (_.get(lastDigest, 'form') !== form || lastDigest.schema !== schema) &&
+            Object.keys(schema.properties).length > 0
+          ) {
             lastDigest.schema = schema;
             lastDigest.form = form;
 
@@ -174,6 +181,12 @@ angular.module('schemaForm')
           // keep the model intact. So therefore we set a flag to tell the others it's time to just
           // let it be.
           scope.externalDestructionInProgress = true;
+
+          childScope = null;
+          defaultForm = null;
+          lastDigest && (lastDigest.form = null);
+          lastDigest && (lastDigest.schema = null);
+          lastDigest = null;
         });
 
         /**

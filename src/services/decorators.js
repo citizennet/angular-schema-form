@@ -33,7 +33,6 @@ angular.module('schemaForm').provider('schemaFormDecorators',
           scope: true,
           require: '?^sfSchema',
           link: function(scope, element, attrs, sfSchema) {
-
             //The ngModelController is used in some templates and
             //is needed for error messages,
             scope.$on('schemaFormPropagateNgModelController', function(event, ngModel) {
@@ -176,7 +175,7 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                 // see https://github.com/Textalk/angular-schema-form/issues/255
                 // and https://github.com/Textalk/angular-schema-form/issues/206
                 form.ngModelOptions = form.ngModelOptions || {};
-                scope.form  = form;
+                scope.form = form;
                 // not proud of this
                 form.getScope = function() { return scope; };
 
@@ -212,9 +211,9 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                     // but be nice to existing ng-if.
                     if (form.condition) {
 
-                      var evalExpr = 'evalExpr(form.condition,{ model: model, "arrayIndex": arrayIndex})';
+                      var evalExpr = 'evalExpr(form.condition,{ form: form, model: model, "arrayIndex": arrayIndex})';
                       if (form.key) {
-                        evalExpr = 'evalExpr(form.condition,{ model: model, "arrayIndex": arrayIndex, "modelValue": model' + sfPath.stringify(form.key) + '})';
+                        evalExpr = 'evalExpr(form.condition, { form: form, model: model, "arrayIndex": arrayIndex, "modelValue": model' + sfPath.stringify(form.key) + '})';
                       }
 
                       angular.forEach(element.children(), function(child) {
@@ -314,10 +313,12 @@ angular.module('schemaForm').provider('schemaFormDecorators',
                         } else {
                           delete obj[form.key.slice(-1)];
                         }
-                      }
 
-                      scope.$emit('schemaFormDeleteFormController', scope);
+                        scope.$emit('schemaFormDeleteFormController', scope);
+                        form = null;
+                      }
                     }
+
                   });
                 }
 
