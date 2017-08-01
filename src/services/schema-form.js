@@ -386,7 +386,7 @@ angular.module('schemaForm').provider('schemaForm',
         if (obj.type === 'checkbox' && angular.isUndefined(obj.schema['default'])) {
           obj.schema['default'] = false;
         }
-        
+
         // Special case: template type with tempplateUrl that's needs to be loaded before rendering
         // TODO: this is not a clean solution. Maybe something cleaner can be made when $ref support
         // is introduced since we need to go async then anyway
