@@ -2,6 +2,7 @@ angular.module('schemaForm').config(['schemaFormDecoratorsProvider', function(de
   var base = 'directives/decorators/bootstrap/';
 
   decoratorsProvider.defineDecorator('bootstrapDecorator', {
+    hidden: {template: base + 'hidden.html', replace: false},
     textarea: {template: base + 'textarea.html', replace: false},
     fieldset: {template: base + 'fieldset.html', replace: false},
     array: {template: base + 'array.html', replace: false},
@@ -26,6 +27,7 @@ angular.module('schemaForm').config(['schemaFormDecoratorsProvider', function(de
 
   //manual use directives
   decoratorsProvider.createDirectives({
+    hidden: base + 'hidden.html',
     textarea: base + 'textarea.html',
     select: base + 'select.html',
     checkbox: base + 'checkbox.html',
