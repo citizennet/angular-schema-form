@@ -33,7 +33,7 @@ angular.module('schemaForm').factory('sfValidator', [function() {
     // when empty, this is a valid value in a schema and does not count as something
     // that breaks validation of 'required'. But for our own sanity an empty field should
     // not validate if it's required.
-    if (value === '') {
+    if (value === '' || typeof value === 'number' && isNaN(number)) {
       value = undefined;
     }
 
